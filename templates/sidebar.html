@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="sidebar" class="sidebar">
+    <button id="closeBtn" class="close-btn">&times;</button>
+    <h2>Welcome, {{ current_user.username }}</h2>
+    <ul>
+        <li><a href="{{ url_for('create_players') }}">Create Player</a></li>
+        <li><a href="{{ url_for('create_teams') }}">Create Team</a></li>
+    </ul>
+    </div>
+    <button id="openBtn" class="open-btn">☰ Menu</button>
+</body>
+</html>

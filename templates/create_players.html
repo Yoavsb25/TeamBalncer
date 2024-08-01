@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Teams</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('create_teams') }}">Create Teams</a></li>
+            <li><a href="{{ url_for('create_players') }}">Create Players</a></li>
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <li>Hello, {{ current_user.username }}</li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Create Players</h1>
+    </header>
+
+    <div class="content-wrapper">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="form-and-display">
+            <div class="form-section">
+                <h2>Create Player</h2>
+                <form method="post">
+                    <label for="player_name">Player Name:</label>
+                    <input type="text" id="player_name" name="player_name" required>
+
+                    <label for="player_skill">Player Skill Level:</label>
+                    <input type="number" id="player_skill" name="player_skill" step="0.5" min="0.5" max="5" required><br>
+
+                    <button type="submit" class="new-instance">Create Player</button>
+                </form>
+            </div>
+
+            <div class="display-section">
+                <h2>Number of Players: <span id="player-count">0</span></h2>
+                <ul>
+                    {% for player in players %}
+                    <li>
+                        <span>{{ player.name }} - Skill: {{ player.skill_level }}</span>
+                        <form method="POST" action="{{ url_for('remove_player') }}">
+                            <input type="hidden" name="player_name" value="{{ player.name }}">
+                            <button type="submit" class="remove">Remove</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="next-button-container">
+            {% if players %}
+                <a href="{{ url_for('results') }}" class="next-button">Let's Play!</a>
+            {% else %}
+                <p>Please add at least one player to continue.</p>
+                <button type="button" class="next-button" id="balanceTeamsButton" disabled>Let's Play!</button>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var menuToggle = document.getElementById("menuToggle");
+            var closeBtn = document.getElementById("closeBtn");
+            var playerCountElement = document.getElementById('player-count');
+            var button = document.getElementById('balanceTeamsButton');
+
+            if (menuToggle) {
+                menuToggle.onclick = function() {
+                    var sidebar = document.getElementById("sidebar");
+                    var sidebarWidth = sidebar ? sidebar.style.width : null;
+                    if (sidebarWidth === "250px") {
+                        sidebar.style.width = "0";
+                    } else {
+                        sidebar.style.width = "250px";
+                    }
+                }
+            }
+
+            if (closeBtn) {
+                closeBtn.onclick = function() {
+                    var sidebar = document.getElementById("sidebar");
+                    if (sidebar) {
+                        sidebar.style.width = "0";
+                    }
+                }
+            }
+
+            if (button) {
+                button.addEventListener('click', function() {
+                    form.submit();
+                });
+            }
+
+            // Fetch player count and update the placeholder
+            fetch('/players/count')
+                .then(response => {
+                    return response.text();
+                })
+                .then(data => {
+                    playerCountElement.textContent = data;
+                })
+                .catch(error => console.error('Error fetching player count:', error));
+        });
+    </script>
+</body>
+</html>
