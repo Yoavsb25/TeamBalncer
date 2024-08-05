@@ -27,11 +27,10 @@
     <!-- Flash Messages Display -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            {% for category, message in messages %}
-                <div class="flash-message {{ category }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
+            {% set latest_message = messages[-1] %}
+                    <div class="flash-messages">
+                        <div class="flash flash-{{ latest_message[0] }}">{{ latest_message[1] }}</div>
+                    </div>
         {% endif %}
     {% endwith %}
 

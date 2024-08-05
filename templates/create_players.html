@@ -30,11 +30,10 @@
         <!-- Flash Messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <div class="flash-messages">
-                    {% for category, message in messages %}
-                        <div class="flash flash-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                </div>
+                {% set latest_message = messages[-1] %}
+                    <div class="flash-messages">
+                        <div class="flash flash-{{ latest_message[0] }}">{{ latest_message[1] }}</div>
+                    </div>
             {% endif %}
         {% endwith %}
 
@@ -57,7 +56,7 @@
                 <ul>
                     {% for player in players %}
                     <li>
-                        <span>{{ player.name }} - Skill: {{ player.skill_level }}</span>
+                        <span>{{ player.name }} - {{ player.skill_level }}</span>
                         <form method="POST" action="{{ url_for('remove_player') }}">
                             <input type="hidden" name="player_name" value="{{ player.name }}">
                             <button type="submit" class="remove">Remove</button>

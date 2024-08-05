@@ -29,11 +29,11 @@
     <div class="results-section">
         {% for team in teams %}
         <div class="team">
-            <h3><span>{{ team.name }} - Team Color : {{ team.color }}</span></h3>
+            <h3><span>{{ team.name }} - {{ team.color }}</span></h3>
             <ul>
                 {% for player in team.players %}
                 <li>
-                    <span>{{ player.name }} - Skill: {{ player.skill_level }}</span>
+                    <span>{{ player.name }} - {{ player.skill_level }}</span>
                 </li>
                 {% endfor %}
                 <h3><span>Average: {{ team.average_skill() }}</span></h3>
