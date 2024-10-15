@@ -30,7 +30,7 @@ soccer_match = SoccerMatch()
 
 @app.route('/')
 def index():
-    return render_template('index.html')  # Render the homepage
+    return render_template('home.html')  # Render the homepage
 
 
 @login_manager.user_loader

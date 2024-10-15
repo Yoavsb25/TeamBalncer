@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Welcome to Soccer Team Manager{% endblock %}
+
+{% block content %}
+    <!-- Your main content here -->
+    <form id="GoToCreateTeamForm" method="POST" action="{{ url_for('create_teams') }}"></form>
+    <a href="{{ url_for('create_teams') }}" class="button-link"><button id="balanceTeamsButton" class="next-button">Create Teams</button></a>
+{% endblock %}
+
+

@@ -1,31 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Results</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+{% extends "base.html" %}
 
-</head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li><a href="{{ url_for('create_teams') }}">Create Teams</a></li>
-            <li><a href="{{ url_for('create_players') }}">Create Players</a></li>
-            {% if current_user.is_authenticated %}
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                <li><a id="menuToggle" class="open-btn">Menu</a></li>
-                <li>Hello, {{ current_user.username }}</li>
-            {% else %}
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-    <header>
-        <h1>Results</h1>
-    </header>
+{% block title %}Results{% endblock %}
+
+{% block content %}
     <div class="results-section">
         {% for team in teams %}
         <div class="team">
@@ -45,17 +22,16 @@
             <input type="hidden" name="action" value="balance_teams">
         </form>
         <button type="submit" class="next-button" id="balanceTeamsButton">Balance Teams Again</button>
-</body>
-    <script>
+{% endblock %}
+<script>
 // Handle form submission to Create Teams page
-        document.addEventListener('DOMContentLoaded', function() {
-            var button = document.getElementById('balanceTeamsButton');
-            var form = document.getElementById('balanceTeamsForm');
+document.addEventListener('DOMContentLoaded', function() {
+    var button = document.getElementById('balanceTeamsButton');
+    var form = document.getElementById('balanceTeamsForm');
 
-            button.addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent default button behavior
-                form.submit(); // Submit the form to navigate to create_teams route
-            });
-        });
-    </script>
-</html>
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default button behavior
+        form.submit(); // Submit the form to navigate to create_teams route
+    });
+});
+</script>

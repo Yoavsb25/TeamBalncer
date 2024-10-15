@@ -21,12 +21,21 @@
         </ul>
     </nav>
     <header>
-        <h1>Welcome to Soccer Team Manager</h1>
+        <h1>{% block title %}{% endblock %}</h1>
+
     </header>
     <main>
-        <!-- Your main content here -->
-        <form id="GoToCreateTeamForm" method="POST" action="{{ url_for('create_teams') }}"></form>
-        <a href="{{ url_for('create_teams') }}" class="button-link"><button id="balanceTeamsButton" class="next-button">Create Teams</button></a>
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% set latest_message = messages[-1] %}
+                    <div class="flash-messages">
+                        <div class="flash flash-{{ latest_message[0] }}">{{ latest_message[1] }}</div>
+                    </div>
+            {% endif %}
+        {% endwith %}
+        <!-- Block for extending content -->
+        {% block content %}{% endblock %}
     </main>
 
     <!-- Include the sidebar content -->

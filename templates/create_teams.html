@@ -1,125 +1,88 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Teams</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li><a href="{{ url_for('create_teams') }}">Create Teams</a></li>
-            {% if current_user.is_authenticated %}
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                <li>Hello, {{ current_user.username }}</li>
-            {% else %}
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
-            {% endif %}
-        </ul>
-    </nav>
+{% extends "base.html" %}
+{% block title %}Create Teams{% endblock %}
+{% block content %}
+    <div class="form-and-display">
+        <div class="form-section">
+            <h2>Create New Team</h2>
+            <form method="post" action="{{ url_for('create_teams') }}">
+                <label for="team_name">Team Name:</label>
+                <input type="text" id="team_name" name="team_name" required>
 
-    <header>
-        <h1>Create Teams</h1>
-    </header>
+                <label for="team_color">Team Color:</label>
+                <input type="text" id="team_color" name="team_color" required>
 
-    <div class="content-wrapper">
-        <!-- Flash Messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% set latest_message = messages[-1] %}
-                    <div class="flash-messages">
-                        <div class="flash flash-{{ latest_message[0] }}">{{ latest_message[1] }}</div>
-                    </div>
-            {% endif %}
-        {% endwith %}
-        <div class="form-and-display">
-            <div class="form-section">
-                <h2>Create New Team</h2>
-                <form method="post" action="{{ url_for('create_teams') }}">
-                    <label for="team_name">Team Name:</label>
-                    <input type="text" id="team_name" name="team_name" required>
-
-                    <label for="team_color">Team Color:</label>
-                    <input type="text" id="team_color" name="team_color" required>
-
-                    <input type="hidden" name="action" value="add_team">
-                    <button type="submit" class="new-instance">Add</button>
-                </form>
-            </div>
-
-            <div class="display-section">
-                <h2>Number of Teams: <span id="teams-count">0</span></h2>
-                <ul>
-                    {% for team in teams %}
-                    <li>
-                        <span>{{ team.name }} - {{ team.color }}</span>
-                        <form method="post" action="{{ url_for('remove_team') }}">
-                            <input type="hidden" name="team_name" value="{{ team.name }}">
-                            <button type="submit" class="remove">Remove</button>
-                        </form>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+                <input type="hidden" name="action" value="add_team">
+                <button type="submit" class="new-instance">Add</button>
+            </form>
         </div>
 
-        <div class="next-button-container">
-            {% if teams %}
-                <a href="{{ url_for('create_players') }}" class="next-button">Next</a>
-            {% else %}
-                <p>Please add at least one team to continue.</p>
-                <button type="button" class="next-button" disabled>Next</button>
-            {% endif %}
+        <div class="display-section">
+            <h2>Number of Teams: <span id="teams-count">0</span></h2>
+            <ul>
+                {% for team in teams %}
+                <li>
+                    <span>{{ team.name }} - {{ team.color }}</span>
+                    <form method="post" action="{{ url_for('remove_team') }}">
+                        <input type="hidden" name="team_name" value="{{ team.name }}">
+                        <button type="submit" class="remove">Remove</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var menuToggle = document.getElementById("menuToggle");
-            var closeBtn = document.getElementById("closeBtn");
-            var teamCountElement = document.getElementById('teams-count');
-            var button = document.getElementById('balanceTeamsButton');
 
-            if (menuToggle) {
-                menuToggle.onclick = function() {
-                    var sidebar = document.getElementById("sidebar");
-                    var sidebarWidth = sidebar ? sidebar.style.width : null;
-                    if (sidebarWidth === "250px") {
-                        sidebar.style.width = "0";
-                    } else {
-                        sidebar.style.width = "250px";
-                    }
+    <div class="next-button-container">
+        {% if teams %}
+        <a href="{{ url_for('create_players') }}" class="next-button">Next</a>
+        {% else %}
+        <p>Please add at least one team to continue.</p>
+        <button type="button" class="next-button" disabled>Next</button>
+        {% endif %}
+    </div>
+{% endblock %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var menuToggle = document.getElementById("menuToggle");
+        var closeBtn = document.getElementById("closeBtn");
+        var teamCountElement = document.getElementById('teams-count');
+        var button = document.getElementById('balanceTeamsButton');
+
+        if (menuToggle) {
+            menuToggle.onclick = function() {
+                var sidebar = document.getElementById("sidebar");
+                var sidebarWidth = sidebar ? sidebar.style.width : null;
+                if (sidebarWidth === "250px") {
+                    sidebar.style.width = "0";
+                } else {
+                    sidebar.style.width = "250px";
                 }
             }
+        }
 
-            if (closeBtn) {
-                closeBtn.onclick = function() {
-                    var sidebar = document.getElementById("sidebar");
-                    if (sidebar) {
-                        sidebar.style.width = "0";
-                    }
+        if (closeBtn) {
+            closeBtn.onclick = function() {
+                var sidebar = document.getElementById("sidebar");
+                if (sidebar) {
+                    sidebar.style.width = "0";
                 }
             }
+        }
 
-            if (button) {
-                button.addEventListener('click', function() {
-                    form.submit();
-                });
-            }
+        if (button) {
+            button.addEventListener('click', function() {
+                form.submit();
+            });
+        }
 
-            // Fetch player count and update the placeholder
-            fetch('/teams/count')
-                .then(response => {
-                    return response.text();
-                })
-                .then(data => {
-                    teamCountElement.textContent = data;
-                })
-                .catch(error => console.error('Error fetching team count:', error));
-        });
-    </script>
-
-</body>
-</html>
+        // Fetch player count and update the placeholder
+        fetch('/teams/count')
+            .then(response => {
+                return response.text();
+            })
+            .then(data => {
+                teamCountElement.textContent = data;
+            })
+            .catch(error => console.error('Error fetching team count:', error));
+    });
+</script>
