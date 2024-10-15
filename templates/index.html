@@ -16,7 +16,7 @@
                 <li>Hello, {{ current_user.username }}</li>
             {% else %}
                 <li><a href="{{ url_for('login') }}">Login</a></li>
-                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+
             {% endif %}
         </ul>
     </nav>
