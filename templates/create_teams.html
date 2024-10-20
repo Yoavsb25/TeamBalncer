@@ -17,7 +17,7 @@
         </div>
 
         <div class="display-section">
-            <h2>Number of Teams: <span id="teams-count">0</span></h2>
+            <h2>Number of Teams: <span id="teams-count">{{ teams | length }}</span></h2>
             <ul>
                 {% for team in teams %}
                 <li>
