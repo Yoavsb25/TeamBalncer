@@ -441,8 +441,26 @@ label {
   to { opacity: 1; }
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
+/* Media Queries for Responsive Design */
+@media (max-width: 1200px) {
+  .content-wrapper {
+    max-width: 95%;
+  }
+
+  button, .btn, input[type="submit"], .next-button {
+    width: 80%;
+  }
+}
+
+@media (max-width: 992px) {
+  body {
+    font-size: 16px;
+  }
+
+  header h1 {
+    font-size: 2.5em;
+  }
+
   .form-and-display {
     flex-direction: column;
   }
@@ -450,14 +468,103 @@ label {
   .form-section, .display-section {
     width: 100%;
     margin-bottom: 20px;
-    min-height: auto;
   }
 
-  .form-section {
-    margin-top: 0;
+  .results-section {
+    justify-content: space-around;
   }
 
-  .display-section {
-    margin-top: 20px;
+  .team {
+    width: 45%;
+  }
+}
+
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+  }
+
+  nav ul li {
+    margin: 5px 0;
+  }
+
+  header {
+    padding: 30px 10px;
+  }
+
+  header h1 {
+    font-size: 2em;
+  }
+
+  button, .btn, input[type="submit"], .next-button {
+    width: 100%;
+    font-size: 1em;
+    padding: 12px 20px;
+  }
+
+  .flash {
+    width: 90%;
+  }
+
+  .team {
+    width: 100%;
+  }
+
+  .sidebar {
+    width: 100%;
+    left: -100%;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+
+  header h1 {
+    font-size: 1.8em;
+  }
+
+  .form-section, .display-section {
+    padding: 15px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="password"] {
+    font-size: 0.9em;
+    padding: 10px 15px;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  nav, .sidebar, .btn, button, input[type="submit"], .next-button {
+    display: none;
+  }
+
+  .content-wrapper {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .form-and-display, .results-section {
+    display: block;
+  }
+
+  .form-section, .display-section, .team {
+    width: 100%;
+    margin-bottom: 20px;
+    page-break-inside: avoid;
   }
 }
