@@ -46,7 +46,7 @@ platformdirs==4.2.2
 prompt_toolkit==3.0.47
 ptyprocess==0.7.0
 pure-eval==0.2.2
-Pygments==2.18.0
+Pygments==2.20.0
 python-dateutil==2.9.0.post0
 pyzmq==26.0.3
 referencing==0.35.1
